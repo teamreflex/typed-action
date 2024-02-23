@@ -22,13 +22,16 @@ export type TypedActionResult<T> =
 
 export type ValidForm = FormData | Record<string, unknown>
 
-export type Action<TResponse, TSchema extends z.Schema> = {
+interface BaseAction<TResponse, TSchema extends z.Schema> {
   /** Input data */
   form: ValidForm
 
   /** Zod schema to validate the input */
   schema: TSchema
+}
 
+export interface Action<TResponse, TSchema extends z.Schema>
+  extends BaseAction<TResponse, TSchema> {
   /** Callback to execute on validation success */
   onValidate: ({ input }: { input: z.infer<TSchema> }) => Promise<TResponse>
 

@@ -1,35 +1,91 @@
-**💛 You can help the author become a full-time open-source maintainer by [sponsoring him on GitHub](https://github.com/sponsors/egoist).**
+# @teamreflex/typed-action
 
----
+[![npm version](https://badgen.net/npm/v/@teamreflex/typed-action)](https://npm.im/@teamreflex/typed-action) [![npm downloads](https://badgen.net/npm/dm/@teamreflex/typed-action)](https://npm.im/@teamreflex/typed-action)
 
-# my-ts-lib
-
-[![npm version](https://badgen.net/npm/v/my-ts-lib)](https://npm.im/my-ts-lib) [![npm downloads](https://badgen.net/npm/dm/my-ts-lib)](https://npm.im/my-ts-lib)
-
-## Using this template
-
-- Search `my-ts-lib` and replace it with your custom package name.
-- Search `egoist` and replace it with your name.
-
-Features:
-
-- Package manager [pnpm](https://pnpm.js.org/), safe and fast
-- Release with [semantic-release](https://npm.im/semantic-release)
-- Bundle with [tsup](https://github.com/egoist/tsup)
-- Test with [vitest](https://vitest.dev)
-
-To skip CI (GitHub action), add `skip-ci` to commit message. To skip release, add `skip-release` to commit message.
+Convenience wrapper for Zod validation in React server actions.
 
 ## Install
 
 ```bash
-npm i my-ts-lib
+npm i @teamreflex/typed-action
 ```
 
-## Sponsors
+## Usage
 
-[![sponsors](https://sponsors-images.egoist.dev/sponsors.svg)](https://github.com/sponsors/egoist)
+Define a Zod schema for your form data:
+
+```ts
+import { z } from "zod"
+
+const updateUserSchema = z.object({
+  name: z.string().min(3).max(64),
+  email: z.string().email(),
+})
+```
+
+Define a new action. This can be done as a const or function, if you wanted to mutate the form data before validation.
+
+```ts
+"use server"
+import { typedAction } from "@teamreflex/typed-action"
+
+export const updateUser = async (form: FormData) =>
+  typedAction({
+    form,
+    schema: updateUserSchema,
+    onValidate: async ({ input }) => {
+      //                 ^? { name: string, email: string }
+      return await db.update(users).set(input).where({ id: 1 })
+    },
+  })
+```
+
+Then use it in your React components:
+
+```tsx
+import { updateUser } from "./actions"
+
+function UpdateUserForm() {
+  return (
+    <form action={updateUser} className="flex flex-col gap-2">
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <button type="submit">Update</button>
+    </form>
+  )
+}
+```
+
+## `typedAction` Options
+
+### `form`: `FormData | Record<string, unknown>`
+
+Can be either a `FormData` or string-keyed object/Record. Objects allow for usage with `useTransition` usage of server actions, whereas `FormData` is more convenient for form submissions and required for `useFormState` usage.
+
+### `schema`: `ZodObject`
+
+Any Zod schema.
+
+### `onValidate`: `({ input: T }) => Promise<R>`
+
+An async function that executes upon a successful Zod validation. The input type `T` is inferred from the schema, and the return type `R` is inferred from the return type of the function.
+
+### `postValidate`: `(({ input: T, output: R }) => void) | undefined`
+
+An optional function that executes after the `onValidate` function. Because Nextjs's implementation of `redirect` and `notFound` results in throws, these can't be done in `onValidate` as they get caught. Instead, you can use `postValidate` to handle these cases.
+
+`T` is the Zod validation output/input to `onValidate`, and `R` is the output of `onValidate`.
+
+## Examples
+
+| Link                                                                                             | Description                                                      |
+| ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| [01-useFormState](https://github.com/teamreflex/typed-action/examples/01-useFormState)           | Using React's `useFormState` hook to render success/error status |
+| [02-nextjs-redirect](https://github.com/teamreflex/typed-action/examples/02-nextjs-redirect)     | Perform a redirect using Next's `redirect` helper                |
+| [03-custom-errors](https://github.com/teamreflex/typed-action/examples/03-custom-errors)         | Throw errors manually to seamlessly use the same state           |
+| [04-helper-components](https://github.com/teamreflex/typed-action/examples/04-helper-components) | Examples of helper components to make errors easier to render    |
+| [05-useTransition](https://github.com/teamreflex/typed-action/examples/05-useTransition)         | Server actions don't always need to be forms                     |
 
 ## License
 
-MIT &copy; [EGOIST](https://github.com/sponsors/egoist)
+MIT &copy; [Reflex](https://github.com/teamreflex)
