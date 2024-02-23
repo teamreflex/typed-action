@@ -78,13 +78,13 @@ An optional function that executes after the `onValidate` function. Because Next
 
 ## Examples
 
-| Link                                                                                             | Description                                                      |
-| ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| [01-useFormState](https://github.com/teamreflex/typed-action/examples/01-useFormState)           | Using React's `useFormState` hook to render success/error status |
-| [02-nextjs-redirect](https://github.com/teamreflex/typed-action/examples/02-nextjs-redirect)     | Perform a redirect using Next's `redirect` helper                |
-| [03-custom-errors](https://github.com/teamreflex/typed-action/examples/03-custom-errors)         | Throw errors manually to seamlessly use the same state           |
-| [04-helper-components](https://github.com/teamreflex/typed-action/examples/04-helper-components) | Examples of helper components to make errors easier to render    |
-| [05-useTransition](https://github.com/teamreflex/typed-action/examples/05-useTransition)         | Server actions don't always need to be forms                     |
+| Link                                                  | Description                                                      |
+| ----------------------------------------------------- | ---------------------------------------------------------------- |
+| [01-useFormState](examples/01-useFormState)           | Using React's `useFormState` hook to render success/error status |
+| [02-nextjs-redirect](examples/02-nextjs-redirect)     | Perform a redirect using Next's `redirect` helper                |
+| [03-custom-errors](examples/03-custom-errors)         | Throw errors manually to seamlessly use the same state           |
+| [04-helper-components](examples/04-helper-components) | Examples of helper components to make errors easier to render    |
+| [05-useTransition](examples/05-useTransition)         | Server actions don't always need to be forms                     |
 
 ## License
 
