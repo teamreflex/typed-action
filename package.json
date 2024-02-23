@@ -1,7 +1,8 @@
 {
   "name": "@teamreflex/typed-action",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Zod validated React server actions",
+  "repository": "https://github.com/teamreflex/typed-action",
   "publishConfig": {
     "access": "public"
   },

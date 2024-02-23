@@ -22,7 +22,7 @@ export type TypedActionResult<T> =
 
 export type ValidForm = FormData | Record<string, unknown>
 
-interface BaseAction<TResponse, TSchema extends z.Schema> {
+export interface BaseAction<TResponse, TSchema extends z.Schema> {
   /** Input data */
   form: ValidForm
 
