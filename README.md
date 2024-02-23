@@ -4,6 +4,8 @@
 
 Convenience wrapper for Zod validation in React server actions.
 
+Rationale: I wasn't happy with how existing solutions revolved around using hooks. I wanted a solution that worked with `useTransition` (arbitrary objects) for button triggers, but also worked with forms (`FormData`) via `useFormState` and `useFormStatus`.
+
 ## Install
 
 ```bash

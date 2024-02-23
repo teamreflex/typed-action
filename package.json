@@ -35,5 +35,12 @@
   },
   "dependencies": {
     "zod": "^3.22.4"
-  }
+  },
+  "keywords": [
+    "react",
+    "next",
+    "server-action",
+    "rsc",
+    "zod"
+  ]
 }
